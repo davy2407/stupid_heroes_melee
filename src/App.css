@@ -1,38 +1,63 @@
 .App {
   text-align: center;
+  height: 100vh;
+  
+  
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
+
+
+
+
+.PlateauDeJeu {
+  width: 100%;
+  height: 100vh;
+  
   background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  
+  justify-content: stretch;
 }
 
-.App-link {
-  color: #61dafb;
+.CarteAGagner{
+  background-color: antiquewhite;
+  width: 30vw;
+  height: 20vh;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.CurrentPlayedCard{
+  background-color: aquamarine;
+  width: 50vw;
+  height: 25vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.FakeBoard{
+  width: 70%;
+  height: 20vh;
+  background-color: red;
+}
+
+.CurrentPlayedCard button{
+  width: 20%;
+  height: 15vh;
+}
+
+
+.NombreJ{
+  height: 5vh;
+  width: 100%;
+  color: darkorange;
+  background-color: darkslateblue;
+}
+
+
+.testCurrent{
+  color: wheat;
 }

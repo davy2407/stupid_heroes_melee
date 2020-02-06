@@ -1,0 +1,11 @@
+.ZoneCartes{
+    width: 100%;
+    height: 20vh;
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.Card{
+    height: 20vh;
+}

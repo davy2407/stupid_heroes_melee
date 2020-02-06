@@ -1,0 +1,8 @@
+.ZoneAdversaires{
+    width: 100vw;
+    height: 20vh;
+    background-color: blanchedalmond;
+    border: 2px solid rgb(255, 182, 72);
+    display: flex;
+    justify-content: space-between;
+}
