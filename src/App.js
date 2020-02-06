@@ -66,21 +66,21 @@ export default class App extends Component {
         {value : -5, color : 'red',backgroundImage :Dos,name: 'Goku' }
       ],
       deck   : [
-        {value : 1, color : 'red', backgroundImage : Goku ,name: 'Goku' },
-        {value : 2, color : 'red',backgroundImage : Crop,name: 'Goku'},
-        {value : 3, color : 'red' , backgroundImage : Hunter,name: 'Goku'},
-        {value : 4, color : 'red',backgroundImage : Mibu,name: 'Goku'},
-        {value : 5, color : 'red',backgroundImage : Saitama,name: 'Goku'},
-        {value : 6, color : 'red',backgroundImage : Train,name: 'Goku'},
-        {value : 7, color : 'red',backgroundImage : Guts,name: 'Goku'},
-        {value : 8, color : 'red',backgroundImage :Kenshin,name: 'Goku'},
-        {value : 9, color : 'red',backgroundImage :Naruto,name: 'Goku'},
-        {value : 10, color : 'red',backgroundImage :Eren,name: 'Goku'},
-        {value : 11, color : 'red',backgroundImage :Gto,name: 'Goku'},
-        {value : 12, color : 'red',backgroundImage : Meliodas,name: 'Goku'},
-        {value : 13, color : 'red',backgroundImage :Ken,name: 'Goku'},
-        {value : 14, color : 'red',backgroundImage :Alita,name: 'Goku'},
-        {value : 15, color : 'red',backgroundImage :Jojo,name: 'Goku' }
+        {value : 1, color : 'red', backgroundImage : Goku ,name: 'Goku',trace : 0 },
+        {value : 2, color : 'red',backgroundImage : Crop,name: 'Goku',trace : 0},
+        {value : 3, color : 'red' , backgroundImage : Hunter,name: 'Goku',trace : 0},
+        {value : 4, color : 'red',backgroundImage : Mibu,name: 'Goku',trace : 0},
+        {value : 5, color : 'red',backgroundImage : Saitama,name: 'Goku',trace : 0},
+        {value : 6, color : 'red',backgroundImage : Train,name: 'Goku',trace : 0},
+        {value : 7, color : 'red',backgroundImage : Guts,name: 'Goku',trace : 0},
+        {value : 8, color : 'red',backgroundImage :Kenshin,name: 'Goku',trace : 0},
+        {value : 9, color : 'red',backgroundImage :Naruto,name: 'Goku',trace : 0},
+        {value : 10, color : 'red',backgroundImage :Eren,name: 'Goku',trace : 0},
+        {value : 11, color : 'red',backgroundImage :Gto,name: 'Goku',trace : 0},
+        {value : 12, color : 'red',backgroundImage : Meliodas,name: 'Goku',trace : 0},
+        {value : 13, color : 'red',backgroundImage :Ken,name: 'Goku',trace : 0},
+        {value : 14, color : 'red',backgroundImage :Alita,name: 'Goku',trace : 0},
+        {value : 15, color : 'red',backgroundImage :Jojo,name: 'Goku',trace : 0 }
       ],
       carteJoueesParJoueur : [],
       currentPlayer : {
@@ -113,6 +113,7 @@ export default class App extends Component {
         
       }
       
+      
       this.setState({nombreJoueurs:nbJoueurs})
       var listeJ = [];
       var deckk = this.state.deck;
@@ -125,18 +126,17 @@ export default class App extends Component {
                       score : 0
                     };
         listeJ.push(joueur);
-
-
-         
+         }
         
         
-      }
+        
       this.setState({joueurs:listeJ});
-      console.log(listeJ[0]);
+      
       this.setState({currentPlayer:listeJ[0]})
       
       this.modifierListeAd(listeJ,listeJ[0].id);
       this.choisiCarteAuHasardCArteAGagner();
+      
       
       
       
@@ -165,12 +165,13 @@ export default class App extends Component {
     
 
     modifierCarteJOueesParJOueurs = (carteSel) => {
-      
+      let carteAPush = carteSel;
       let listeCarte = this.state.carteJoueesParJoueur;
-      listeCarte.push(carteSel);
+      listeCarte.push(carteAPush);
+      carteAPush.trace = this.state.currentPlayer.id;
+      console.log(carteAPush.trace);
       this.setState({carteJoueesParJoueur : listeCarte})
-      console.log(carteSel);
-      console.log(listeCarte);
+      
     }
 
 
@@ -189,6 +190,7 @@ export default class App extends Component {
       this.setState({joueurAdversaires:listeAdversaires});
       this.setState({currentPlayer:nouveauCurrentPlayer});
       this.choisiCarteAuHasardCArteAGagner();
+      
       
       
       
@@ -224,7 +226,7 @@ export default class App extends Component {
         alert('fin');
         
       }else{
-        console.log(CardAGagner);
+        
       let randomCard = CardAGagner[Math.floor(Math.random() * CardAGagner.length)];
       let index = randomCard.value;
       let carteOut = CardAGagner.findIndex(card => card.value === index);
@@ -236,6 +238,19 @@ export default class App extends Component {
 
 
   };
+
+  changeLaTrace = (deckATracer) => {
+
+    let objetCurrentPLayer = deckATracer;
+    console.log(objetCurrentPLayer);
+    // for (let i = 0;  i<= objetCurrentPLayer.deckJoueur.length; i++) {
+    //   objetCurrentPLayer.deckJoueur[i].trace = objetCurrentPLayer.id
+      
+    // }
+    // this.setState({currentPlayer:objetCurrentPLayer});
+
+
+  }
   
 
   
@@ -266,7 +281,7 @@ export default class App extends Component {
 
         <Board className="CarteAGagner"
                 deck = {this.state.carteJoueesParJoueur}>
-          Carte à gagner
+          
 
         </Board>
 
@@ -293,6 +308,7 @@ export default class App extends Component {
                 onCurrentPlayer = {this.state.currentPlayer}
                 // onDelete = {this.state.removeCard}
                 onRemove={this.removeCard}
+                onTrace={this.changeLaTrace}
                 >
 
         </Board>

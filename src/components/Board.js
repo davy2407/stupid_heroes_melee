@@ -32,7 +32,7 @@ class Board extends Component{
         <div className = "ZoneCartes">
             {this.props.deck.map((card)=>{
                 return <Card
-                
+                onnTrace={this.props.onTrace}
                 current = {this.props.onCurrentPlayer}
                 onnRemove={this.props.onRemove}
                 name={card.name}
@@ -40,6 +40,7 @@ class Board extends Component{
                 value={card.value}
                 color={card.color}
                 backgroundImage={card.backgroundImage}
+
                 
                 >
                     {card.value}

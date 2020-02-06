@@ -16,6 +16,7 @@ export default function Card(props){
             
             
             props.onnRemove(props.current,props.value);
+            props.onnTrace(props.current);
         }
       
         }
@@ -36,7 +37,8 @@ export default function Card(props){
             
             
             >
-                {props.value}</p>
+                {props.value}
+                </p>
         </button>
         
     )
