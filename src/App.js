@@ -107,7 +107,7 @@ export default class App extends Component {
 
     startGame = () =>{
       let nbJoueurs = 0;
-      while (nbJoueurs===0||nbJoueurs>5) {
+      while (nbJoueurs<=1||nbJoueurs>5) {
         nbJoueurs = parseInt(prompt("Nombre de Joueurs : "));
 
         
@@ -191,7 +191,9 @@ export default class App extends Component {
     calculGagnantPerdant = (listeCarteJouees) => {
       let currentCarteAGagner = this.state.carteEnJeu.value
       let listeATrier = listeCarteJouees;
-      console.log(listeATrier);
+      let objetGagnant = {};
+      let traceGagnant = 0;
+      
       let listeValeur = []
       if (currentCarteAGagner >0) {
         for (let i = 0;  i< listeATrier.length; i++) {
@@ -209,10 +211,13 @@ export default class App extends Component {
               return a-b});
   
   
-        console.log(duplicate);
+        
         if (duplicate.length===0) {
           let gagnant = Math.max(...listeValeur);
           console.log("valeur carte gaganante: " + gagnant);
+          objetGagnant = listeATrier.find(objet => objet.value === gagnant);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
           this.cleanCarteJoueesParJOueurs();
           
         }else{
@@ -231,23 +236,35 @@ export default class App extends Component {
               
             }
             console.log('gagnant : '+listeValeur[0]);
+            objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
             
           }
           else if (listeValeur[2]=== duplicate[0]){
             listeValeur.splice(0,4);
             alert('égalité * 4');
             console.log('gagnant : '+ listeValeur[0]);
+            objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
             
           } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
             listeValeur.splice(0,4);
             alert('egalité 2*2 cartes');
             console.log('gagnant est ' + listeValeur[0]);
+            objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
             
           }
 
            else {
             let gagnant = Math.max(...listeValeur);
           console.log("valeur carte gaganante: " + gagnant);
+          objetGagnant = listeATrier.find(objet => objet.value === gagnant);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
           }
           
           
@@ -284,6 +301,9 @@ export default class App extends Component {
         if (duplicate.length===0) {
           let perdant = Math.min(...listeValeur);
           console.log("valeur carte perdante: " +perdant);
+          objetGagnant = listeATrier.find(objet => objet.value === perdant);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
           this.cleanCarteJoueesParJOueurs();
           
         }else{
@@ -302,22 +322,34 @@ export default class App extends Component {
               
             }
             console.log('perdant : '+listeValeur[0]);
+            objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
             
           }
           else if (listeValeur[0]=== duplicate[0]&& listeValeur[2]===duplicate[0]) {
             listeValeur.splice(0,4);
             alert('égalité * 4');
             console.log('perdant : '+listeValeur[0]);
+            objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
             
           } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
             listeValeur.splice(0,4);
             alert('egalité 2*2 cartes');
             console.log('perdant est ' + listeValeur[0]);
+            objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
             
           }
            else {
             let gagnant = Math.max(...listeValeur);
           console.log("valeur carte perdante: " + gagnant);
+          objetGagnant = listeATrier.find(objet => objet.value === gagnant);
+          traceGagnant = objetGagnant.trace;
+          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
           }
           
           
@@ -398,6 +430,11 @@ export default class App extends Component {
       let CardAGagner = this.state.deckCarteAGagner;
       if (CardAGagner.length <=0) {
         alert('fin');
+        let listeScoreJoueur = this.state.joueurs;
+        for (let i = 0; i < listeScoreJoueur.length ; i++) {
+          console.log("score du joueur "+listeScoreJoueur[i].nom+ " = "+ listeScoreJoueur[i].score)
+          
+        }
         
       }else{
         
@@ -423,6 +460,21 @@ export default class App extends Component {
     // }
     // this.setState({currentPlayer:objetCurrentPLayer});
 
+
+  }
+
+  augmenteBaisseScoreJoueur = (traceCarte,valeurCarte)=>{
+    // let listeJoueurs = this.state.joueurs;
+    // let trace = traceCarte;
+    // let point = valeurCarte;
+    // let index = listeJoueurs.findIndex(joueur => joueur.id === trace);
+    // let gagnant = listeJoueurs.find(joueur =>joueur.id===trace );
+    
+    // listeJoueurs[index].score += point;
+    // console.log("Score joueur : "+gagnant.nom+ " = " +listeJoueurs[index].score);
+    // this.setState({joueurs : listeJoueurs});
+
+    
 
   }
 
