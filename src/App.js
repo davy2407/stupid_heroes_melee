@@ -167,11 +167,107 @@ export default class App extends Component {
     modifierCarteJOueesParJOueurs = (carteSel) => {
       let carteAPush = carteSel;
       let listeCarte = this.state.carteJoueesParJoueur;
-      listeCarte.push(carteAPush);
       carteAPush.trace = this.state.currentPlayer.id;
-      console.log(carteAPush.trace);
+      listeCarte.push(carteAPush);
+      
+      
       this.setState({carteJoueesParJoueur : listeCarte})
       
+      let nombreJJ = this.state.nombreJoueurs;
+      if (listeCarte.length>=nombreJJ) {
+        this.calculGagnantPerdant(listeCarte);
+        
+        this.choisiCarteAuHasardCArteAGagner();
+        
+      }
+      
+    }
+
+    cleanCarteJoueesParJOueurs = () => {
+      let nouvoBoard = [];
+      this.setState({carteJoueesParJoueur:nouvoBoard});
+    }
+
+    calculGagnantPerdant = (listeCarteJouees) => {
+      let currentCarteAGagner = this.state.carteEnJeu.value
+      let listeATrier = listeCarteJouees;
+      let listeValeur = []
+      for (let i = 0;  i< listeATrier.length; i++) {
+        listeValeur.push(listeATrier[i].value)
+        
+      }
+      
+      let item_list = listeValeur;
+
+      let duplicate = item_list.reduce((acc,currentValue,index, array) => {
+        if(array.indexOf(currentValue)!=index && !acc.includes(currentValue)) acc.push(currentValue);
+        return acc;
+          }, []);
+      duplicate = duplicate.sort(function(b,a){
+            return a-b});
+
+
+      console.log(duplicate);
+      if (duplicate.length===0) {
+        let gagnant = Math.max(...listeValeur);
+        console.log("valeur carte gaganante: " + gagnant);
+        this.cleanCarteJoueesParJOueurs();
+        
+      }else{
+        
+        listeValeur = listeValeur.sort(function(b,a){
+          return a-b
+        })
+        if (listeValeur[0]===duplicate[0] && duplicate.length<=1) {
+          listeValeur.splice(0,2);
+          alert('egalité');
+          for (let i = 0; i < listeValeur.length; i++) {
+            if (listeValeur[i]===duplicate[0]) {
+              listeValeur.splice(i,1);
+              
+            }
+            
+          }
+          console.log('gagnant : '+listeValeur[0]);
+          
+        }
+        else if (listeValeur[0]=== duplicate[0]&& listeValeur[2]===duplicate[0]) {
+          listeValeur.splice(0,4);
+          alert('égalité * 4');
+          
+        } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
+          listeValeur.splice(0,4);
+          alert('egalité 2*2 cartes');
+          console.log('gagnant est ' + listeValeur[0]);
+          
+        }
+         else {
+          let gagnant = Math.max(...listeValeur);
+        console.log("valeur carte gaganante: " + gagnant);
+        }
+        
+        
+        // for (let i = 0; i <listeValeur.length; i++) {
+        //   if (listeValeur[i] === duplicate[0]) {
+
+        //     listeValeur.splice(i,1);
+        //   }
+          
+        // }
+        
+        
+        console.log(listeValeur);
+        this.cleanCarteJoueesParJOueurs();
+      }
+      
+      
+      
+     
+     
+    //   for(i = 1; i < 5; i++) { 
+    //     eval('var ' + k + i + '= ' + i + ';'); 
+    // } 
+
     }
 
 
@@ -182,6 +278,7 @@ export default class App extends Component {
     }
 
     finDeTour = () => {
+      
       let listeAdversaires = this.state.joueurAdversaires;
       let nouveauCurrentPlayer = listeAdversaires[0];
       let ancienCurrentPlayer = this.state.currentPlayer;
@@ -189,7 +286,7 @@ export default class App extends Component {
       listeAdversaires.push(ancienCurrentPlayer);
       this.setState({joueurAdversaires:listeAdversaires});
       this.setState({currentPlayer:nouveauCurrentPlayer});
-      this.choisiCarteAuHasardCArteAGagner();
+      
       
       
       
@@ -200,7 +297,7 @@ export default class App extends Component {
       let cartesRestante = [...objetJoueurActif.deckJoueur];
       const index = cartesRestante.findIndex(card => card.value === id);
       let carteSel = cartesRestante.find(card => card.value === id);
-      console.log(carteSel);
+      
       
       this.modifierCarteJOueesParJOueurs(carteSel);
       cartesRestante.splice(index,1);
@@ -242,7 +339,7 @@ export default class App extends Component {
   changeLaTrace = (deckATracer) => {
 
     let objetCurrentPLayer = deckATracer;
-    console.log(objetCurrentPLayer);
+   
     // for (let i = 0;  i<= objetCurrentPLayer.deckJoueur.length; i++) {
     //   objetCurrentPLayer.deckJoueur[i].trace = objetCurrentPLayer.id
       
@@ -251,6 +348,8 @@ export default class App extends Component {
 
 
   }
+
+
   
 
   
