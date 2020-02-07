@@ -191,74 +191,151 @@ export default class App extends Component {
     calculGagnantPerdant = (listeCarteJouees) => {
       let currentCarteAGagner = this.state.carteEnJeu.value
       let listeATrier = listeCarteJouees;
+      console.log(listeATrier);
       let listeValeur = []
-      for (let i = 0;  i< listeATrier.length; i++) {
-        listeValeur.push(listeATrier[i].value)
+      if (currentCarteAGagner >0) {
+        for (let i = 0;  i< listeATrier.length; i++) {
+          listeValeur.push(listeATrier[i].value)
+          
+        }
         
-      }
-      
-      let item_list = listeValeur;
-
-      let duplicate = item_list.reduce((acc,currentValue,index, array) => {
-        if(array.indexOf(currentValue)!=index && !acc.includes(currentValue)) acc.push(currentValue);
-        return acc;
-          }, []);
-      duplicate = duplicate.sort(function(b,a){
-            return a-b});
-
-
-      console.log(duplicate);
-      if (duplicate.length===0) {
-        let gagnant = Math.max(...listeValeur);
-        console.log("valeur carte gaganante: " + gagnant);
-        this.cleanCarteJoueesParJOueurs();
-        
-      }else{
-        
-        listeValeur = listeValeur.sort(function(b,a){
-          return a-b
-        })
-        if (listeValeur[0]===duplicate[0] && duplicate.length<=1) {
-          listeValeur.splice(0,2);
-          alert('egalité');
-          for (let i = 0; i < listeValeur.length; i++) {
-            if (listeValeur[i]===duplicate[0]) {
-              listeValeur.splice(i,1);
+        let item_list = listeValeur;
+  
+        let duplicate = item_list.reduce((acc,currentValue,index, array) => {
+          if(array.indexOf(currentValue)!=index && !acc.includes(currentValue)) acc.push(currentValue);
+          return acc;
+            }, []);
+        duplicate = duplicate.sort(function(b,a){
+              return a-b});
+  
+  
+        console.log(duplicate);
+        if (duplicate.length===0) {
+          let gagnant = Math.max(...listeValeur);
+          console.log("valeur carte gaganante: " + gagnant);
+          this.cleanCarteJoueesParJOueurs();
+          
+        }else{
+          
+          listeValeur = listeValeur.sort(function(b,a){
+            return a-b
+          })
+          if (listeValeur[0]===duplicate[0] && duplicate.length<=1 && listeValeur[3]!==duplicate[0]) {
+            listeValeur.splice(0,2);
+            alert('egalité');
+            for (let i = 0; i < listeValeur.length; i++) {
+              if (listeValeur[i]===duplicate[0]) {
+                listeValeur.splice(i,1);
+                
+              }
               
             }
+            console.log('gagnant : '+listeValeur[0]);
             
           }
-          console.log('gagnant : '+listeValeur[0]);
-          
-        }
-        else if (listeValeur[0]=== duplicate[0]&& listeValeur[2]===duplicate[0]) {
-          listeValeur.splice(0,4);
-          alert('égalité * 4');
-          
-        } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
-          listeValeur.splice(0,4);
-          alert('egalité 2*2 cartes');
-          console.log('gagnant est ' + listeValeur[0]);
-          
-        }
-         else {
-          let gagnant = Math.max(...listeValeur);
-        console.log("valeur carte gaganante: " + gagnant);
-        }
-        
-        
-        // for (let i = 0; i <listeValeur.length; i++) {
-        //   if (listeValeur[i] === duplicate[0]) {
+          else if (listeValeur[2]=== duplicate[0]){
+            listeValeur.splice(0,4);
+            alert('égalité * 4');
+            console.log('gagnant : '+ listeValeur[0]);
+            
+          } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
+            listeValeur.splice(0,4);
+            alert('egalité 2*2 cartes');
+            console.log('gagnant est ' + listeValeur[0]);
+            
+          }
 
-        //     listeValeur.splice(i,1);
-        //   }
+           else {
+            let gagnant = Math.max(...listeValeur);
+          console.log("valeur carte gaganante: " + gagnant);
+          }
           
-        // }
+          
+          // for (let i = 0; i <listeValeur.length; i++) {
+          //   if (listeValeur[i] === duplicate[0]) {
+  
+          //     listeValeur.splice(i,1);
+          //   }
+            
+          // }
+          
+          
+          console.log(listeValeur);
+          this.cleanCarteJoueesParJOueurs();
+        }
         
+      } else {
+        for (let i = 0;  i< listeATrier.length; i++) {
+          listeValeur.push(listeATrier[i].value)
+          
+        }
         
-        console.log(listeValeur);
-        this.cleanCarteJoueesParJOueurs();
+        let item_list = listeValeur;
+  
+        let duplicate = item_list.reduce((acc,currentValue,index, array) => {
+          if(array.indexOf(currentValue)!=index && !acc.includes(currentValue)) acc.push(currentValue);
+          return acc;
+            }, []);
+        duplicate = duplicate.sort(function(a,b){
+              return a-b});
+  
+  
+        console.log(duplicate);
+        if (duplicate.length===0) {
+          let perdant = Math.min(...listeValeur);
+          console.log("valeur carte perdante: " +perdant);
+          this.cleanCarteJoueesParJOueurs();
+          
+        }else{
+          
+          listeValeur = listeValeur.sort(function(a,b){
+            return a-b
+          })
+          if (listeValeur[0]===duplicate[0] && duplicate.length<=1&&listeValeur[3]!==duplicate[0]) {
+            listeValeur.splice(0,2);
+            alert('egalité');
+            for (let i = 0; i < listeValeur.length; i++) {
+              if (listeValeur[i]===duplicate[0]) {
+                listeValeur.splice(i,1);
+                
+              }
+              
+            }
+            console.log('perdant : '+listeValeur[0]);
+            
+          }
+          else if (listeValeur[0]=== duplicate[0]&& listeValeur[2]===duplicate[0]) {
+            listeValeur.splice(0,4);
+            alert('égalité * 4');
+            console.log('perdant : '+listeValeur[0]);
+            
+          } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
+            listeValeur.splice(0,4);
+            alert('egalité 2*2 cartes');
+            console.log('perdant est ' + listeValeur[0]);
+            
+          }
+           else {
+            let gagnant = Math.max(...listeValeur);
+          console.log("valeur carte perdante: " + gagnant);
+          }
+          
+          
+          // for (let i = 0; i <listeValeur.length; i++) {
+          //   if (listeValeur[i] === duplicate[0]) {
+  
+          //     listeValeur.splice(i,1);
+          //   }
+            
+          // }
+          
+          
+          console.log(listeValeur);
+          this.cleanCarteJoueesParJOueurs();
+        }
+
       }
+      
       
       
       
