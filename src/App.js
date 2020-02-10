@@ -3,6 +3,7 @@ import Board from './components/Board';
 import BoardNonACtif from './components/BoardNonActif';
 import styled, { keyframes } from "styled-components";
 import CardCible from './components/CardCible';
+import DragAndDrop from '@bit/bronz3beard.react-component-collection.drag-and-drop';
 
 // import ModalChange from './components/Modal';
 
@@ -29,7 +30,18 @@ import Jojo from './images/Jojo.jpg'
 import Dos from './images/dos_un.png'
 
 
+const handleDrop = (files) => {
+	let tempFileList = [];
 
+	for (let i = 0; i < files.length; i++) {
+		const file = files[i];
+		if (!file.name) {
+			return;
+		}
+		alert(file.name)
+		tempFileList.push(file);
+	}
+};
 
 // const AllCards = {
 //   colors: ['Red', 'Black'],
@@ -103,6 +115,7 @@ export default class App extends Component {
     //   var nbJoueurs = prompt("???");
     //   console.log(nbJoueurs);  
     //    }
+    
     
 
     startGame = () =>{
