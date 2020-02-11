@@ -1,39 +1,35 @@
-import React from 'react';
-import './CardCible.css'
+import React, { Component } from 'react';
+import './CardCible.css';
+import Card from './Card';
 
-export default function CardCible(props){
-    return(
-        // <div className={"CardContainer " + (props.shown ? "Active" : "Toto")}>
-        //     <div className="CardBody">
-        //         <CardBack/>
-
-        //         <CardFront />
-        //     </div>
-        // </div>
-        
-        <button className="CardContainer"
-        
-      
-        
-         >
-
-        <img
-        className="ImageStyle" 
-        alt="test" 
-        src={props.backgroundImage
-                } 
-            
-            />
-
-            <p
-                style={{'color': props.color}
-            }
-
+class CardCible extends Component{
+    render(){
+        return (
+        <div className = "ZoneCartes">
+            {
             
             
-            >
-                {props.value}</p>
-        </button>
-        
+            this.props.dekkValeur.map((card)=>{
+                return <Card
+                
+                
+                
+                
+                className="Card"
+                value={card.value}
+                color={card.color}
+                backgroundImage={card.backgroundImage}
+
+                
+                >
+                    {card.value}
+                </Card>
+            })}
+        </div>
     )
 }
+}
+
+
+
+export default CardCible;

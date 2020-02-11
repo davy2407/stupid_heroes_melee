@@ -56,10 +56,11 @@ export default class App extends Component {
     super(props);
 
     this.state = {
+      egalite : false,
       nombreJoueurs : 0,
       joueurs : [],
       joueurAdversaires: [],
-      carteEnJeu : {value : 0, color : 'red' , backgroundImage : Dos,name: 'Goku'},
+      carteEnJeu : [],
       deckCarteAGagner : [
         {value : 1, color : 'red', backgroundImage : Dos ,name: 'Goku' },
         {value : 2, color : 'red',backgroundImage : Dos,name: 'Goku'},
@@ -119,6 +120,7 @@ export default class App extends Component {
     
 
     startGame = () =>{
+      console.log(this.state.carteEnJeu);
       let nbJoueurs = 0;
       while (nbJoueurs<=1||nbJoueurs>5) {
         nbJoueurs = parseInt(prompt("Nombre de Joueurs : "));
@@ -202,12 +204,28 @@ export default class App extends Component {
     }
 
     calculGagnantPerdant = (listeCarteJouees) => {
-      let currentCarteAGagner = this.state.carteEnJeu.value
+
+      let currentCarteAGagnerListe = this.state.carteEnJeu;
+      let currentCarteAGagner = currentCarteAGagnerListe[0].value
       let listeATrier = listeCarteJouees;
       let objetGagnant = {};
       let traceGagnant = 0;
       
       let listeValeur = []
+      listeATrier.sort(function(b,a){
+        return a-b
+      })
+      if (listeATrier[0]===listeATrier[listeATrier.length-1]) {
+        console.log('super egalité');
+        
+        this.setState({egalite: !this.state.egalite})
+        this.setState({ state: this.state });
+        let testE = this.state.egalite;
+        console.log(testE);
+        this.cleanCarteJoueesParJOueurs();
+
+        
+      }else{
       if (currentCarteAGagner >0) {
         for (let i = 0;  i< listeATrier.length; i++) {
           listeValeur.push(listeATrier[i].value)
@@ -217,7 +235,7 @@ export default class App extends Component {
         let item_list = listeValeur;
   
         let duplicate = item_list.reduce((acc,currentValue,index, array) => {
-          if(array.indexOf(currentValue)!=index && !acc.includes(currentValue)) acc.push(currentValue);
+          if(array.indexOf(currentValue)!==index && !acc.includes(currentValue)) acc.push(currentValue);
           return acc;
             }, []);
         duplicate = duplicate.sort(function(b,a){
@@ -228,12 +246,20 @@ export default class App extends Component {
         if (duplicate.length===0) {
           let gagnant = Math.max(...listeValeur);
           console.log("valeur carte gaganante: " + gagnant);
+          
           objetGagnant = listeATrier.find(objet => objet.value === gagnant);
           traceGagnant = objetGagnant.trace;
           this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
           this.cleanCarteJoueesParJOueurs();
           
-        }else{
+        } else if (duplicate.length===listeValeur.length/2) {
+          alert('égalité total');
+          this.setState({egalite: !this.state.egalite})
+
+          
+        }
+        
+        else{
           
           listeValeur = listeValeur.sort(function(b,a){
             return a-b
@@ -303,7 +329,7 @@ export default class App extends Component {
         let item_list = listeValeur;
   
         let duplicate = item_list.reduce((acc,currentValue,index, array) => {
-          if(array.indexOf(currentValue)!=index && !acc.includes(currentValue)) acc.push(currentValue);
+          if(array.indexOf(currentValue)!==index && !acc.includes(currentValue)) acc.push(currentValue);
           return acc;
             }, []);
         duplicate = duplicate.sort(function(a,b){
@@ -378,6 +404,7 @@ export default class App extends Component {
           console.log(listeValeur);
           this.cleanCarteJoueesParJOueurs();
         }
+      }
 
       }
       
@@ -439,6 +466,7 @@ export default class App extends Component {
   }
 
     choisiCarteAuHasardCArteAGagner =()=>{
+      let egalite = this.state.egalite;
 
       let CardAGagner = this.state.deckCarteAGagner;
       if (CardAGagner.length <=0) {
@@ -449,14 +477,34 @@ export default class App extends Component {
           
         }
         
-      }else{
+      }else if (egalite===true) {
+        let NewRandomCard = CardAGagner[Math.floor(Math.random() * CardAGagner.length)];
+        let index = NewRandomCard.value;
+        let oldRandomCard = this.state.carteEnJeu;
+        oldRandomCard.push(NewRandomCard);
+        let carteOut = CardAGagner.findIndex(card => card.value === index);
+        CardAGagner.splice(carteOut,1);
+        console.log(oldRandomCard);
+
+        this.setState({carteEnJeu:oldRandomCard});
+        this.setState({deckCarteAGagner:CardAGagner});
+        this.setState({egalite:false});
+
+
+
+      } else {
+
         
+      
+        console.log('test egalite test');
       let randomCard = CardAGagner[Math.floor(Math.random() * CardAGagner.length)];
+      let listeRandomCArd = [];
+      listeRandomCArd.push(randomCard);
       let index = randomCard.value;
       let carteOut = CardAGagner.findIndex(card => card.value === index);
       CardAGagner.splice(carteOut,1);
 
-      this.setState({carteEnJeu:randomCard});
+      this.setState({carteEnJeu:listeRandomCArd});
       this.setState({deckCarteAGagner:CardAGagner});
       }
 
@@ -533,9 +581,7 @@ export default class App extends Component {
           >Démarrer</button>
           <div className="FakeBoard">
             <CardCible
-            value={this.state.carteEnJeu.value}
-            color={this.state.carteEnJeu.color}
-            backgroundImage={this.state.carteEnJeu.backgroundImage}></CardCible>
+            dekkValeur = {this.state.carteEnJeu}></CardCible>
 
           </div>
 
