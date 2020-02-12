@@ -2,5 +2,6 @@
     border: 1px solid black;
     height: 18vh;
     width: 19vw;
-    background-color: chartreuse;
+    background-color: orange;
+    border-radius: 2rem;
 }

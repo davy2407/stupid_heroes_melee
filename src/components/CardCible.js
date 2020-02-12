@@ -5,7 +5,7 @@ import Card from './Card';
 class CardCible extends Component{
     render(){
         return (
-        <div className = "ZoneCartes">
+        <div className = "ZoneCartesCible">
             {
             
             

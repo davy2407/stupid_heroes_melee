@@ -1,8 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Modak&display=swap');
 .App {
   text-align: center;
   height: 100vh;
+  background-color: rgb(70, 5, 70);
+  margin: 0;
   
   
+  
+}
+
+.Suivant-btn{
+  border-radius: 1rem;
+  border: 2px solid rgb(95, 94, 94);
+  background-color:orange;
+  font-size: 1.3vw;
+}
+
+
+.Demarrer-btn{
+  border-radius: 1rem;
+  border: 2px solid orange;
+  background-color: rgb(95, 94, 94);
+  color: white;
+  font-size: 1.3vw;
+
 }
 
 
@@ -45,6 +66,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px solid black;
+  border-radius: 1rem;
 }
 
 .CurrentPlayedCard button{

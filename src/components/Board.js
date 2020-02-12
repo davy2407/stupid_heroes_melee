@@ -29,7 +29,7 @@ class Board extends Component{
 
     render(){
         return (
-        <div className = "ZoneCartes">
+        <div className = "ZoneCartesBoard">
             {this.props.deck.map((card)=>{
                 return <Card
                 onnTrace={this.props.onTrace}

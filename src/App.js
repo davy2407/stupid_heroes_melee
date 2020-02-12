@@ -79,21 +79,21 @@ export default class App extends Component {
         {value : -5, color : 'red',backgroundImage :Dos,name: 'Goku' }
       ],
       deck   : [
-        {value : 1, color : 'red', backgroundImage : Goku ,name: 'Goku',trace : 0 },
-        {value : 2, color : 'red',backgroundImage : Crop,name: 'Goku',trace : 0},
-        {value : 3, color : 'red' , backgroundImage : Hunter,name: 'Goku',trace : 0},
-        {value : 4, color : 'red',backgroundImage : Mibu,name: 'Goku',trace : 0},
-        {value : 5, color : 'red',backgroundImage : Saitama,name: 'Goku',trace : 0},
-        {value : 6, color : 'red',backgroundImage : Train,name: 'Goku',trace : 0},
-        {value : 7, color : 'red',backgroundImage : Guts,name: 'Goku',trace : 0},
-        {value : 8, color : 'red',backgroundImage :Kenshin,name: 'Goku',trace : 0},
-        {value : 9, color : 'red',backgroundImage :Naruto,name: 'Goku',trace : 0},
+        {value : 1, color : 'green', backgroundImage : Goku ,name: 'Goku',trace : 0 },
+        {value : 2, color : 'green',backgroundImage : Crop,name: 'Goku',trace : 0},
+        {value : 3, color : 'green' , backgroundImage : Hunter,name: 'Goku',trace : 0},
+        {value : 4, color : 'yellow',backgroundImage : Mibu,name: 'Goku',trace : 0},
+        {value : 5, color : 'yellow',backgroundImage : Saitama,name: 'Goku',trace : 0},
+        {value : 6, color : 'yellow',backgroundImage : Train,name: 'Goku',trace : 0},
+        {value : 7, color : 'blue',backgroundImage : Guts,name: 'Goku',trace : 0},
+        {value : 8, color : 'blue',backgroundImage :Kenshin,name: 'Goku',trace : 0},
+        {value : 9, color : 'blue',backgroundImage :Naruto,name: 'Goku',trace : 0},
         {value : 10, color : 'red',backgroundImage :Eren,name: 'Goku',trace : 0},
         {value : 11, color : 'red',backgroundImage :Gto,name: 'Goku',trace : 0},
         {value : 12, color : 'red',backgroundImage : Meliodas,name: 'Goku',trace : 0},
-        {value : 13, color : 'red',backgroundImage :Ken,name: 'Goku',trace : 0},
-        {value : 14, color : 'red',backgroundImage :Alita,name: 'Goku',trace : 0},
-        {value : 15, color : 'red',backgroundImage :Jojo,name: 'Goku',trace : 0 }
+        {value : 13, color : 'black',backgroundImage :Ken,name: 'Goku',trace : 0},
+        {value : 14, color : 'black',backgroundImage :Alita,name: 'Goku',trace : 0},
+        {value : 15, color : 'black',backgroundImage :Jojo,name: 'Goku',trace : 0 }
       ],
       carteJoueesParJoueur : [],
       currentPlayer : {
@@ -214,7 +214,7 @@ export default class App extends Component {
       let listeATrier = listeCarteJouees;
       let objetGagnant = {};
       let traceGagnant = 0;
-      let egalite;
+      // let egalite;
       
       let listeValeur = []
       listeATrier.sort(function(b,a){
@@ -223,12 +223,17 @@ export default class App extends Component {
       if (listeATrier[0]===listeATrier[listeATrier.length-1]) {
         console.log('super egalité');
         
-        egalite = true;
-        console.log(egalite);
-        this.setState({egalite:egalite})
+        // egalite = true;
+        // console.log(egalite);
+        this.siEgalite();
+        this.componentDidUpdate(this.props,this.state);
         
-        this.cleanCarteJoueesParJOueurs();
-        this.choisiCarteAuHasardCArteAGagner();
+        
+        
+        
+
+        
+        
 
         
       }else{
@@ -260,8 +265,8 @@ export default class App extends Component {
           
         } else if (duplicate.length===listeValeur.length/2) {
           alert('égalité total');
-          egalite = true;
-          this.setState({egalite:egalite});
+          // egalite = true;
+          this.siEgalite();
 
           
         }
@@ -473,7 +478,7 @@ export default class App extends Component {
   }
 
     choisiCarteAuHasardCArteAGagner =()=>{
-      let egalite = this.state.egalite;
+      
 
       let CardAGagner = this.state.deckCarteAGagner;
       if (CardAGagner.length <=0) {
@@ -484,7 +489,8 @@ export default class App extends Component {
           
         }
         
-      }else if (!egalite) {
+      }else if (this.state.egalite===true) {
+        console.log("cas 2")
         
 
 
@@ -501,18 +507,20 @@ export default class App extends Component {
 
       this.setState({carteEnJeu:listeRandomCArd});
       this.setState({deckCarteAGagner:CardAGagner});
+      this.noEgalite();
         
 
 
 
       } else {
+        console.log("cas no egalite")
 
         
       
         
         let NewRandomCard = CardAGagner[Math.floor(Math.random() * CardAGagner.length)];
         let index = NewRandomCard.value;
-        let oldRandomCard = this.state.carteEnJeu;
+        let oldRandomCard = []
         oldRandomCard.push(NewRandomCard);
         let carteOut = CardAGagner.findIndex(card => card.value === index);
         CardAGagner.splice(carteOut,1);
@@ -555,7 +563,29 @@ export default class App extends Component {
     
 
   }
+  
+  siEgalite=() =>{
+    let testEgalite = true;
+    this.setState({egalite:testEgalite}, function(){
+      console.log(this.state.egalite);
+    });
+    
+  };
 
+  noEgalite=()=>{
+    let testEgalite = false;
+    this.setState({egalite:testEgalite}, function (){
+      console.log(this.state.egalite);
+    });
+  };
+
+  componentDidUpdate = (prevProps , prevState) => {
+    if (prevState.egalite!==this.state.egalite) {
+      this.cleanCarteJoueesParJOueurs();
+        
+      this.choisiCarteAuHasardCArteAGagner();
+    }
+  }
 
   
 
@@ -594,7 +624,7 @@ export default class App extends Component {
         <div className="CurrentPlayedCard">
 
 
-        <button onClick={this.startGame}
+        <button className="Demarrer-btn" onClick={this.startGame}
           >Démarrer</button>
           <div className="FakeBoard">
             <CardCible
@@ -602,7 +632,7 @@ export default class App extends Component {
 
           </div>
 
-          <button onClick={this.finDeTour}>Joueur suivant</button>
+          <button className="Suivant-btn" onClick={this.finDeTour}>Joueur suivant</button>
 
           
 
