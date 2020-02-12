@@ -204,12 +204,17 @@ export default class App extends Component {
     }
 
     calculGagnantPerdant = (listeCarteJouees) => {
-
+      let point = 0;
       let currentCarteAGagnerListe = this.state.carteEnJeu;
       let currentCarteAGagner = currentCarteAGagnerListe[0].value
+      for (let i = 0; i < currentCarteAGagnerListe.length; i++) {
+        point += currentCarteAGagnerListe[i].value;
+        
+      }
       let listeATrier = listeCarteJouees;
       let objetGagnant = {};
       let traceGagnant = 0;
+      let egalite;
       
       let listeValeur = []
       listeATrier.sort(function(b,a){
@@ -218,11 +223,12 @@ export default class App extends Component {
       if (listeATrier[0]===listeATrier[listeATrier.length-1]) {
         console.log('super egalité');
         
-        this.setState({egalite: !this.state.egalite})
-        this.setState({ state: this.state });
-        let testE = this.state.egalite;
-        console.log(testE);
+        egalite = true;
+        console.log(egalite);
+        this.setState({egalite:egalite})
+        
         this.cleanCarteJoueesParJOueurs();
+        this.choisiCarteAuHasardCArteAGagner();
 
         
       }else{
@@ -245,16 +251,17 @@ export default class App extends Component {
         
         if (duplicate.length===0) {
           let gagnant = Math.max(...listeValeur);
-          console.log("valeur carte gaganante: " + gagnant);
+          console.log("valeur carte gagnante: " + gagnant);
           
           objetGagnant = listeATrier.find(objet => objet.value === gagnant);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
           this.cleanCarteJoueesParJOueurs();
           
         } else if (duplicate.length===listeValeur.length/2) {
           alert('égalité total');
-          this.setState({egalite: !this.state.egalite})
+          egalite = true;
+          this.setState({egalite:egalite});
 
           
         }
@@ -277,7 +284,7 @@ export default class App extends Component {
             console.log('gagnant : '+listeValeur[0]);
             objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
             
           }
           else if (listeValeur[2]=== duplicate[0]){
@@ -286,7 +293,7 @@ export default class App extends Component {
             console.log('gagnant : '+ listeValeur[0]);
             objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
             
           } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
             listeValeur.splice(0,4);
@@ -294,7 +301,7 @@ export default class App extends Component {
             console.log('gagnant est ' + listeValeur[0]);
             objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
             
           }
 
@@ -303,7 +310,7 @@ export default class App extends Component {
           console.log("valeur carte gaganante: " + gagnant);
           objetGagnant = listeATrier.find(objet => objet.value === gagnant);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
           }
           
           
@@ -342,7 +349,7 @@ export default class App extends Component {
           console.log("valeur carte perdante: " +perdant);
           objetGagnant = listeATrier.find(objet => objet.value === perdant);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
           this.cleanCarteJoueesParJOueurs();
           
         }else{
@@ -363,7 +370,7 @@ export default class App extends Component {
             console.log('perdant : '+listeValeur[0]);
             objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
             
           }
           else if (listeValeur[0]=== duplicate[0]&& listeValeur[2]===duplicate[0]) {
@@ -372,7 +379,7 @@ export default class App extends Component {
             console.log('perdant : '+listeValeur[0]);
             objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
             
           } else if (listeValeur[0]=== duplicate[0]&& duplicate.length>1) {
             listeValeur.splice(0,4);
@@ -380,7 +387,7 @@ export default class App extends Component {
             console.log('perdant est ' + listeValeur[0]);
             objetGagnant = listeATrier.find(objet => objet.value === listeValeur[0]);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
             
           }
            else {
@@ -388,7 +395,7 @@ export default class App extends Component {
           console.log("valeur carte perdante: " + gagnant);
           objetGagnant = listeATrier.find(objet => objet.value === gagnant);
           traceGagnant = objetGagnant.trace;
-          this.augmenteBaisseScoreJoueur(traceGagnant,currentCarteAGagner);
+          this.augmenteBaisseScoreJoueur(traceGagnant,point);
           }
           
           
@@ -477,7 +484,32 @@ export default class App extends Component {
           
         }
         
-      }else if (egalite===true) {
+      }else if (!egalite) {
+        
+
+
+
+
+
+
+        let randomCard = CardAGagner[Math.floor(Math.random() * CardAGagner.length)];
+      let listeRandomCArd = [];
+      listeRandomCArd.push(randomCard);
+      let index = randomCard.value;
+      let carteOut = CardAGagner.findIndex(card => card.value === index);
+      CardAGagner.splice(carteOut,1);
+
+      this.setState({carteEnJeu:listeRandomCArd});
+      this.setState({deckCarteAGagner:CardAGagner});
+        
+
+
+
+      } else {
+
+        
+      
+        
         let NewRandomCard = CardAGagner[Math.floor(Math.random() * CardAGagner.length)];
         let index = NewRandomCard.value;
         let oldRandomCard = this.state.carteEnJeu;
@@ -488,24 +520,6 @@ export default class App extends Component {
 
         this.setState({carteEnJeu:oldRandomCard});
         this.setState({deckCarteAGagner:CardAGagner});
-        this.setState({egalite:false});
-
-
-
-      } else {
-
-        
-      
-        console.log('test egalite test');
-      let randomCard = CardAGagner[Math.floor(Math.random() * CardAGagner.length)];
-      let listeRandomCArd = [];
-      listeRandomCArd.push(randomCard);
-      let index = randomCard.value;
-      let carteOut = CardAGagner.findIndex(card => card.value === index);
-      CardAGagner.splice(carteOut,1);
-
-      this.setState({carteEnJeu:listeRandomCArd});
-      this.setState({deckCarteAGagner:CardAGagner});
       }
 
 
@@ -524,10 +538,13 @@ export default class App extends Component {
 
   }
 
-  augmenteBaisseScoreJoueur = (traceCarte,valeurCarte)=>{
-    // let listeJoueurs = this.state.joueurs;
-    // let trace = traceCarte;
-    // let point = valeurCarte;
+  augmenteBaisseScoreJoueur = (traceCarte,pounds)=>{
+    let listeJoueurs = this.state.joueurs;
+    let trace = traceCarte;
+    let point = pounds;
+    console.log(trace);
+    console.log(point);
+    
     // let index = listeJoueurs.findIndex(joueur => joueur.id === trace);
     // let gagnant = listeJoueurs.find(joueur =>joueur.id===trace );
     
